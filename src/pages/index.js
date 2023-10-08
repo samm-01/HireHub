@@ -1,124 +1,253 @@
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
-
+import Link from 'next/link'
+import { useRouter } from 'next/router';
+import { Fragment, useState } from 'react';
 const inter = Inter({ subsets: ['latin'] })
+import { Disclosure, Popover, Transition } from '@headlessui/react';
+import navLinks from '../../constants/navLinks';
+import useWindowSize from '../../hooks/useWindowSize';
+// import FadeHamburgerIcon from './FadeHamburgerIcon';
+import { ChevronDownIcon, ChevronUpIcon, Bars3Icon } from '@heroicons/react/20/solid';
+
 
 export default function Home() {
+  const router = useRouter();
+  const { width } = useWindowSize();
+
+  const [isMobileNavOpen, setisMobileNavOpen] = useState(false); // For toggling the mobile nav
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/pages/index.js</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div className="bg-slate-300 flex flex-wrap justify-center">
+      {/* <div className="text-white bg-gray-900 p-4">
+        <Link className="navbar-brand" href="index.html" >
+          <Image className="img-fluid" src="images/logo.svg" alt="logo" width={100} height={100} />
+        </Link>
+        <div>
+          <ul>
+            <li>
+              <Link href="/"> Home </Link>
+            </li>
+          </ul>
         </div>
-      </div>
+      </div> */}
+      <header className='shadow-sm sticky md:w-3/4 w-full top-0 z-10  p-4 md:relative'>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700/10 after:dark:from-sky-900 after:dark:via-[#0141ff]/40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`${inter.className} mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p
-            className={`${inter.className} m-0 max-w-[30ch] text-sm opacity-50`}
-          >
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`${inter.className} mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p
-            className={`${inter.className} m-0 max-w-[30ch] text-sm opacity-50`}
-          >
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`${inter.className} mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p
-            className={`${inter.className} m-0 max-w-[30ch] text-sm opacity-50`}
-          >
-            Discover and deploy boilerplate example Next.js&nbsp;projects.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`${inter.className} mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p
-            className={`${inter.className} m-0 max-w-[30ch] text-sm opacity-50`}
-          >
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+        <div className='relative'>
+          <div className='flex flex-wrap items-center px-7 '>
+            {/* Logo */}
+            <Link href='/'>
+              <Image
+                src='/images/logo.svg'
+                priority
+                alt='Logo'
+                className=' w-56 lg:w-36 -ml-1 hidden md:block'
+                width={100}
+                height={100}
+              />
+              <Image
+                src='/images/logo.svg'
+                width={150}
+                height={178}
+                priority
+                alt='Logo'
+                className='block md:hidden outline-none'
+              />
+            </Link>
+            {/* NavBar */}
+            <div className='flex flex-1 justify-end items-center'>
+              <div
+                className='hidden items-center md:flex text-md gap-x-8 [@media(max-width:840px)]:pr-4 [@media(max-width:840px)]:gap-x-4'
+                id='menu'
+              >
+                {navLinks.map(({ title, link, nestedLinks = [] }) =>
+                  nestedLinks.length > 0 ? (
+                    <Popover
+                      className='relative focus-visible:outline-none'
+                      key={`${title}`}
+                    >
+                      {({ open }) => (
+                        <>
+                          <Popover.Button
+                            className={`inline-flex items-center gap-x-1 leading-6 text-gray-900 focus-visible:outline-none ${open ? 'bg-blue' : ''
+                              } rounded-lg px-2`}
+                          >
+                            <p
+                              className={`my-2 ${open
+                                ? 'text-white'
+                                : 'hover-gradTxtNavbar'
+                                }`}
+                            >
+                              {title}
+                            </p>
+                            {open ? (
+                              <ChevronUpIcon
+                                className='h-5 w-5 text-white'
+                                aria-hidden='true'
+                              />
+                            ) : (
+                              <ChevronDownIcon
+                                className='h-5 w-5 text-black hover-gradTxtNavbar'
+                                aria-hidden='true'
+                              />
+                            )}
+                          </Popover.Button>
+                          <Transition
+                            as={Fragment}
+                            enter='transition ease-out duration-200'
+                            enterFrom='opacity-0 translate-y-1'
+                            enterTo='opacity-100 translate-y-0'
+                            leave='transition ease-in duration-150'
+                            leaveFrom='opacity-100 translate-y-0'
+                            leaveTo='opacity-0 translate-y-1'
+                          >
+                            <Popover.Panel className='absolute left-1/2 z-10 flex w-screen max-w-min -translate-x-1/2'>
+                              <div className='w-56 flex-auto overflow-hidden rounded-lg bg-white leading-6 shadow-lg ring-1 ring-gray-900/5 p-2'>
+                                {nestedLinks.map(
+                                  (
+                                    nestedItem
+                                  ) => (
+                                    <Link
+                                      key={
+                                        nestedItem.title
+                                      }
+                                      href={`${link}${nestedItem.link}`}
+                                    >
+                                      <p className='rounded-lg text-black hover:bg-saffron hover:text-white p-2.5'>
+                                        {
+                                          nestedItem.title
+                                        }
+                                      </p>
+                                    </Link>
+                                  )
+                                )}
+                              </div>
+                            </Popover.Panel>
+                          </Transition>
+                        </>
+                      )}
+                    </Popover>
+                  ) : (
+                    <Link key={`${title}`} href={link}>
+                      <p
+                        className={`${router.pathname === `${link}` ||
+                          router.pathname === `/${link}`
+                          ? 'gradTxtNavbar'
+                          : 'text-black hover-gradTxtNavbar'
+                          } my-2`}
+                      >
+                        {title}
+                      </p>
+                    </Link>
+                  )
+                )}
+              </div>
+            </div>
+            {/* <div className="flex justify-evenly">
+              <ul className="flex flex-wrap">
+                <li> Sign Up</li>
+                <li> Sign Up</li>
+              </ul>
+            </div> */}
+            {/* Hamburger Menu */}
+            <div
+              className={`md:hidden shadow-3xl rounded-full ${isMobileNavOpen
+                ? 'border-saffron border-2'
+                : 'border-0'
+                } outline-none h-[50px] w-[50px] flex items-center justify-center`}
+            >
+              <Bars3Icon
+                toggled={isMobileNavOpen}
+                toggle={setisMobileNavOpen}
+                rounded
+              />
+            </div>
+          </div>
+          {/* Mobile Navbar */}
+          {isMobileNavOpen && width < 768 && (
+            <div className='absolute w-full overflow-y-auto bg-white max-h-[80vh] pb-4'>
+              <div className='border-t border-gray-400 flex flex-col'>
+                {navLinks.map(({ title, link, nestedLinks = [] }) =>
+                  nestedLinks.length > 0 ? (
+                    <Disclosure
+                      key={`${title}`}
+                      as='div'
+                      className='px-8 outline-none'
+                    >
+                      {({ open }) => (
+                        <>
+                          <Disclosure.Button
+                            className={`flex w-full items-center justify-between outline-none ${open
+                              ? 'border-b border-gray-400'
+                              : ''
+                              }`}
+                          >
+                            <p className='text-base font-medium py-2.5'>
+                              {title}
+                            </p>
+                            <ChevronDownIcon
+                              className={`h-5 w-5 flex-none
+															${open ? 'rotate-180' : ''}
+														`}
+                              aria-hidden='true'
+                            />
+                          </Disclosure.Button>
+                          <Disclosure.Panel className='mt-2.5 outline-none flex flex-col divide-y divide-gray-400 border border-gray-400 rounded-sm'>
+                            {nestedLinks.map(
+                              (nestedItem) => (
+                                <Link
+                                  key={
+                                    nestedItem.title
+                                  }
+                                  href={`${link}${nestedItem.link}`}
+                                  className='outline-none'
+                                >
+                                  <p className='py-2 outline-none px-4 text-base font-medium inline-block'>
+                                    {
+                                      nestedItem.title
+                                    }
+                                  </p>
+                                </Link>
+                              )
+                            )}
+                          </Disclosure.Panel>
+                        </>
+                      )}
+                    </Disclosure>
+                  ) : (
+                    <Link
+                      key={`${title}`}
+                      href={link}
+                      className='px-4 outline-none'
+                    >
+                      <p
+                        className={`${router.pathname === `${link}` ||
+                          router.pathname === `/${link}`
+                          ? 'gradTxtNavbar'
+                          : ''
+                          } py-2.5 px-4 text-base font-medium inline-block`}
+                      >
+                        {title}
+                      </p>
+                    </Link>
+                  )
+                )}
+              </div>
+              <div className='mx-8 border-t border-gray-400'>
+                <p className='py-2 text-sm font-medium'>
+                  Need Help? Talk to an expert{' '}
+                  <strong>9876543210</strong>
+                </p>
+                <button
+                  type='button'
+                  className='transform rounded-full bg-saffron p-1 pl-5 pr-5 font-semibold text-black'
+                >
+                  Latest Jobs
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </header>
+    </div>
   )
 }
